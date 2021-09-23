@@ -1,9 +1,16 @@
 package main
 
 import (
-	"minderaWeatherService/weatherapp"
+	"minderaWeatherService/handlers"
+
+	"github.com/gin-gonic/gin"
+)
+
+var (
+	router = gin.Default()
 )
 
 func main() {
-	weatherapp.StartApp()
+	router.GET("/v1/weather/", handlers.TempHandler)
+	router.Run(":8080")
 }

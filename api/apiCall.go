@@ -15,7 +15,7 @@ var (
 )
 
 const (
-	weatherstackBaseUrl = "http://api.weatherstack.com/"
+	weatherstackBaseUrl = "http://api.weatherstack11.com/"
 	openWeatherBaseUrl  = "http://api.openweathermap.org/data/2.5/"
 )
 

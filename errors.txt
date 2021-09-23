@@ -5,3 +5,5 @@ curl "http://api.weatherstack.com/current?access_key=4df59363a7dabdd46c99880ac46
 query:
 curl "http://api.openweathermap.org/data/2.5/weather?q=melbourne,
 AU&appid=4df59363a7dabdd46c99880ac464b57e"
+
+57d27e6e2e86b46e0582e77ccf92661c

@@ -5,18 +5,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"minderaWeatherService/api"
+	"minderaWeatherService/clients/rest_client"
 	"minderaWeatherService/utils/errors"
-	"net/http"
 )
 
 func GetWeatherReport(access_key, city string) (*WeatherInfo, *errors.RestErr) {
 	//create a new request to be sent to the weatherstack api
-	req, _ := http.NewRequest("GET", api.GetWeatherStackURL(access_key, city), nil)
-	res, apiErr := http.DefaultClient.Do(req)
+	res, apiErr := rest_client.Get(api.GetWeatherStackURL(access_key, city))
 
 	//if the restapi call to weather stack fails, do a rest api call to openweather api
 	if apiErr != nil {
-		fmt.Println("Openstack not working")
 		//As api call to weather stack is not working, an api call is made to openweather api
 		result, err := getOpenWeatherReport()
 		if err != nil {
@@ -35,13 +33,13 @@ func GetWeatherReport(access_key, city string) (*WeatherInfo, *errors.RestErr) {
 		WindSpeed:   float64(tempRes.Current.WindSpeed),
 		Temperature: float64(tempRes.Current.Temperature),
 	}
+	fmt.Println(result)
 	return &result, nil
 }
 
 func getOpenWeatherReport() (*WeatherInfo, *errors.RestErr) {
 	fmt.Println(api.GetOpenWeatherURL())
-	req, _ := http.NewRequest("GET", api.GetOpenWeatherURL(), nil)
-	res, apiErr := http.DefaultClient.Do(req)
+	res, apiErr := rest_client.Get(api.GetOpenWeatherURL())
 	if apiErr != nil {
 		//if the api call to both the apis fail, then we need to return the value from the storage we have
 		return nil, errors.NewInternalServerError("error fetching weather info from both weather stack and open weather apis")
