@@ -20,3 +20,8 @@ type WeatherInfo struct {
 	WindSpeed   float64 `json:"wind_speed"`
 	Temperature float64 `json:"temperature_degrees"`
 }
+
+func (wi *WeatherInfo) FTOC() {
+	wi.WindSpeed = wi.WindSpeed * 10
+	wi.Temperature = wi.Temperature - 273.15
+}

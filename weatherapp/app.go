@@ -1,8 +1,6 @@
 package weatherapp
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +9,6 @@ var (
 )
 
 func StartApp() {
-	fmt.Println("Weather App")
 	mapUrl()
 	router.Run(":8080")
 }
