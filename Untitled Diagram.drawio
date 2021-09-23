@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-09-23T14:13:51.853Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="dWYwCcXBJGlZfEVPD0Jq" version="15.3.0" type="github">
+<mxfile host="app.diagrams.net" modified="2021-09-23T14:14:56.814Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="luXBBRqc07tyLt1AdKOV" version="15.3.0" type="github">
   <diagram id="kgpKYQtTHZ0yAKxKKP6v" name="Page-1">
     <mxGraphModel dx="868" dy="394" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -40,7 +40,7 @@
         <mxCell id="ubkGCfq6PcjplO8qVia7-10" value="" style="points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;strokeWidth=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
           <mxGeometry x="740" y="140" width="10" height="410" as="geometry" />
         </mxCell>
-        <mxCell id="ubkGCfq6PcjplO8qVia7-15" value="" style="endArrow=classic;html=1;exitX=0.9;exitY=0.169;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="3nuBFxr9cyL0pnOWT2aG-6">
+        <mxCell id="ubkGCfq6PcjplO8qVia7-15" value="" style="endArrow=classic;html=1;" edge="1" parent="1" source="3nuBFxr9cyL0pnOWT2aG-6">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="400" y="220" as="sourcePoint" />
             <mxPoint x="550" y="194" as="targetPoint" />
@@ -64,8 +64,8 @@
             <mxPoint x="177" y="269" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ubkGCfq6PcjplO8qVia7-23" value="forward response" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="200" y="240" width="120" height="20" as="geometry" />
+        <mxCell id="ubkGCfq6PcjplO8qVia7-23" value="forward response from weather stack" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="201" y="220" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="ubkGCfq6PcjplO8qVia7-28" value="unsuccessful response" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="380" y="260" width="140" height="20" as="geometry" />
@@ -79,7 +79,7 @@
         <mxCell id="ubkGCfq6PcjplO8qVia7-32" value="if response usuccessful from weatherstack, request open weather" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="380" y="300" width="330" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ubkGCfq6PcjplO8qVia7-36" value="" style="endArrow=classic;html=1;exitX=0;exitY=0.313;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="ubkGCfq6PcjplO8qVia7-9" target="3nuBFxr9cyL0pnOWT2aG-5">
+        <mxCell id="ubkGCfq6PcjplO8qVia7-36" value="" style="endArrow=classic;html=1;exitX=-0.4;exitY=0.244;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="ubkGCfq6PcjplO8qVia7-9" target="3nuBFxr9cyL0pnOWT2aG-5">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="540" y="240" as="sourcePoint" />
             <mxPoint x="349.5" y="240" as="targetPoint" />
@@ -115,8 +115,8 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ubkGCfq6PcjplO8qVia7-44" value="forward response" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="200" y="400" width="120" height="20" as="geometry" />
+        <mxCell id="ubkGCfq6PcjplO8qVia7-44" value="forward response from open weather" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="390" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="ubkGCfq6PcjplO8qVia7-45" value="unsuccessful response" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="380" y="450" width="140" height="20" as="geometry" />
