@@ -1,0 +1,2 @@
+curl "http://api.weatherstack.com/current?access_key=4df59363a7dabdd46c99880ac464b57e&query=Melbourne"
+{"success":false,"error":{"code":101,"type":"invalid_access_key","info":"You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]"}}
