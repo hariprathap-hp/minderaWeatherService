@@ -1,11 +1,9 @@
 package main
 
 import (
-	"Melbourne_Weather_Service/weatherapp"
-	"fmt"
+	"minderaWeatherService/weatherapp"
 )
 
 func main() {
-	fmt.Println("Inside Main")
 	weatherapp.StartApp()
 }
