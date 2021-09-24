@@ -1,6 +1,7 @@
 package temp
 
 import (
+	"errors"
 	"io/ioutil"
 	"minderaWeatherService/api"
 	"minderaWeatherService/clients/rest_client"
@@ -17,33 +18,34 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-/*func TestWeatherStackAPIFail(t *testing.T) {
+func TestWeatherStackAPIFail(t *testing.T) {
 	rest_client.FlushMockups()
 	rest_client.AddMockups(rest_client.Mock{
-		URL:        "http://api.weatherstack.com/current?access_key=key&query=city",
+		URL:        api.GetWeatherStackURL(""),
 		HTTPMethod: http.MethodGet,
-		Err:        errors.New(""),
+		Err:        errors.New("error fetching weather info from both weather stack and open weather apis"),
 	})
-	result, err := GetWeatherReport("", "")
+	result, err := GetWeatherReport("")
 	assert.Nil(t, result)
 	assert.NotNil(t, err)
+	assert.EqualValues(t, "error fetching weather info from both weather stack and open weather apis", err.Error)
 	rest_client.FlushMockups()
 }
 
 func TestOpenWeatherAPIFail(t *testing.T) {
 	rest_client.FlushMockups()
 	rest_client.AddMockups(rest_client.Mock{
-		URL:        "http://api.openweathermap.org/data/2.5/weather?q=melbourne,AU&appid=uid",
+		URL:        api.GetOpenWeatherURL(""),
 		HTTPMethod: http.MethodGet,
 		Err:        errors.New("error fetching weather info from both weather stack and open weather apis"),
 	})
-	result, err := GetWeatherReport("", "")
+	result, err := getOpenWeatherReport("")
 	assert.Nil(t, result)
 	assert.NotNil(t, err)
 	assert.EqualValues(t, err.Status, http.StatusInternalServerError)
 	assert.EqualValues(t, err.Error, "error fetching weather info from both weather stack and open weather apis")
 	rest_client.FlushMockups()
-}*/
+}
 
 func TestWeatherStackAPISuccess(t *testing.T) {
 	rest_client.FlushMockups()
