@@ -18,7 +18,7 @@ type WeatherInfo struct {
 }
 
 func SetCache(key string, info interface{}) bool {
-	Cache.Set(key, info, 10*time.Second)
+	Cache.Set(key, info, 3*time.Second)
 	return true
 }
 
