@@ -72,7 +72,7 @@ func TestOpenWeatherAPISuccess(t *testing.T) {
 			Body:       ioutil.NopCloser(strings.NewReader(`{"wind_speed": 22,"temperature_degrees": 11}`)),
 		},
 	})
-	result, err := GetWeatherReport("", "")
+	result, err := GetWeatherReport("")
 	assert.Nil(t, err)
 	assert.NotNil(t, result)
 	//assert.EqualValues(t, 11, result.Temperature)

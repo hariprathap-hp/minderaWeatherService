@@ -22,6 +22,6 @@ type WeatherInfo struct {
 }
 
 func (wi *WeatherInfo) FTOC() {
-	wi.WindSpeed = wi.WindSpeed * 10
+	wi.WindSpeed = wi.WindSpeed * 3.6
 	wi.Temperature = wi.Temperature - 273.15
 }

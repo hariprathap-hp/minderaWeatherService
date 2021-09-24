@@ -10,15 +10,14 @@ import (
 )
 
 func TempHandler(c *gin.Context) {
-	access_key := c.Request.URL.Query().Get("access_key")
-	city := c.Request.URL.Query().Get("query")
+	city := c.Request.URL.Query().Get("city")
 
-	valErr := validate(access_key, city)
+	valErr := validate(city)
 	if valErr != nil {
 		c.JSON(valErr.Status, valErr)
 		return
 	}
-	result, tempErr := temp.GetWeatherReport(access_key, city)
+	result, tempErr := temp.GetWeatherReport(city)
 	if tempErr != nil {
 		c.JSON(tempErr.Status, tempErr)
 		return
@@ -26,10 +25,7 @@ func TempHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-func validate(key, city string) *errors.RestErr {
-	if key == "" {
-		return errors.NewBadRequestError("access key cannot be empty")
-	}
+func validate(city string) *errors.RestErr {
 	if city == "" {
 		return errors.NewBadRequestError("city cannot be empty")
 	}
