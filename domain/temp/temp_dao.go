@@ -2,7 +2,6 @@ package temp
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"minderaWeatherService/api"
 	"minderaWeatherService/clients/rest_client"
@@ -11,7 +10,6 @@ import (
 
 func GetWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 	//create a new request to be sent to the weatherstack api
-	fmt.Println(api.GetWeatherStackURL(city))
 	res, apiErr := rest_client.Get(api.GetWeatherStackURL(city))
 
 	//if the restapi call to weather stack fails, do a rest api call to openweather api
@@ -34,12 +32,10 @@ func GetWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 		WindSpeed:   float64(tempRes.Current.WindSpeed),
 		Temperature: float64(tempRes.Current.Temperature),
 	}
-	fmt.Println(result)
 	return &result, nil
 }
 
 func getOpenWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
-	fmt.Println(api.GetOpenWeatherURL(city))
 	res, apiErr := rest_client.Get(api.GetOpenWeatherURL(city))
 	if apiErr != nil {
 		//if the api call to both the apis fail, then we need to return the value from the storage we have

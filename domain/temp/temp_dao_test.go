@@ -2,6 +2,7 @@ package temp
 
 import (
 	"io/ioutil"
+	"minderaWeatherService/api"
 	"minderaWeatherService/clients/rest_client"
 	"net/http"
 	"os"
@@ -42,40 +43,38 @@ func TestOpenWeatherAPIFail(t *testing.T) {
 	assert.EqualValues(t, err.Status, http.StatusInternalServerError)
 	assert.EqualValues(t, err.Error, "error fetching weather info from both weather stack and open weather apis")
 	rest_client.FlushMockups()
-}
+}*/
 
 func TestWeatherStackAPISuccess(t *testing.T) {
 	rest_client.FlushMockups()
 	rest_client.AddMockups(rest_client.Mock{
-		URL:        "http://api.weatherstack.com/current?access_key1=key&query=city1",
+		URL:        api.GetWeatherStackURL(""),
 		HTTPMethod: http.MethodGet,
 		Response: &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(strings.NewReader(`{"wind_speed": 22,"temperature_degrees": 11}`)),
-		},
-	})
-	_, err := GetWeatherReport("", "")
-	assert.Nil(t, err)
-	//assert.NotNil(t, result)
-	//assert.EqualValues(t, 11, result.Temperature)
-	//assert.EqualValues(t, 22, result.WindSpeed)
-	rest_client.FlushMockups()
-}*/
-
-func TestOpenWeatherAPISuccess(t *testing.T) {
-	rest_client.FlushMockups()
-	rest_client.AddMockups(rest_client.Mock{
-		URL:        "http://api.openweathermap.org/data/2.5/weather?q=melbourne1,AU&appid=uid1",
-		HTTPMethod: http.MethodGet,
-		Response: &http.Response{
-			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(strings.NewReader(`{"wind_speed": 22,"temperature_degrees": 11}`)),
+			Body:       ioutil.NopCloser(strings.NewReader(`{"current":{"temperature":17,"wind_speed":43}}`)),
 		},
 	})
 	result, err := GetWeatherReport("")
 	assert.Nil(t, err)
 	assert.NotNil(t, result)
-	//assert.EqualValues(t, 11, result.Temperature)
-	//assert.EqualValues(t, 22, result.WindSpeed)
+	assert.EqualValues(t, 17, result.Temperature)
+	assert.EqualValues(t, 43, result.WindSpeed)
+}
+
+func TestOpenWeatherAPISuccess(t *testing.T) {
 	rest_client.FlushMockups()
+	rest_client.AddMockups(rest_client.Mock{
+		URL:        api.GetOpenWeatherURL(""),
+		HTTPMethod: http.MethodGet,
+		Response: &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       ioutil.NopCloser(strings.NewReader(`{"main":{"temp":373.15},"wind":{"speed":10}}`)),
+		},
+	})
+	result, err := getOpenWeatherReport("")
+	assert.Nil(t, err)
+	assert.NotNil(t, result)
+	assert.EqualValues(t, 100, result.Temperature)
+	assert.EqualValues(t, 36, result.WindSpeed)
 }
