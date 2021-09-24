@@ -2,16 +2,15 @@ package cacheConfig
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"minderaWeatherService/utils/errors"
-	"os"
 	"time"
 
+	"github.com/gregjones/httpcache/diskcache"
 	"github.com/patrickmn/go-cache"
 )
 
 var Cache = cache.New(5*time.Second, 5*time.Second)
+var diskCache = diskcache.New("./cachedInfo")
 
 type WeatherInfo struct {
 	Windspeed   float32 `json:"wind_speed"`
@@ -32,35 +31,16 @@ func GetCache(key string) (interface{}, bool) {
 	return data, found
 }
 
-func SetNoExpiredCache(info interface{}) (*errors.RestErr, bool) {
-	filecache, err := os.Create("weather_info.json")
-	if err != nil {
-		fmt.Println("file opening err")
-	}
-	res, errMarshal := json.Marshal(info)
+func SetNoExpiredCache(city string, info interface{}) *errors.RestErr {
+	bytes, errMarshal := json.Marshal(info)
 	if errMarshal != nil {
-		return errors.NewInternalServerError("error while json encoding of the input received"), false
+		return errors.NewInternalServerError("error while marshaling weather info")
 	}
-	_, errWrite := filecache.Write(res)
-	if errWrite != nil {
-		return errors.NewInternalServerError("error while writing temperature info in file"), false
-	}
-	return nil, true
+	diskCache.Set(city, bytes)
+	return nil
 }
 
-func GetNoExpiredCache() (*WeatherInfo, *errors.RestErr) {
-	filecache, errOpen := os.Open("weather_info.json")
-	if errOpen != nil {
-		return nil, errors.NewInternalServerError("error while opening file to fetch weather info")
-	}
-	res, errRead := ioutil.ReadAll(filecache)
-	if errRead != nil {
-		return nil, errors.NewInternalServerError("error while reading data from file reader")
-	}
-	var result WeatherInfo
-	errUnMarshal := json.Unmarshal(res, &result)
-	if errUnMarshal != nil {
-		return nil, errors.NewInternalServerError("error while unmarshaling weather info read from file")
-	}
-	return &result, nil
+func GetNoExpiredCache(city string) ([]byte, bool) {
+	result, isFound := diskCache.Get(city)
+	return result, isFound
 }

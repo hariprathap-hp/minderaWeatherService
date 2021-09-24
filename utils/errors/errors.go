@@ -23,3 +23,11 @@ func NewBadRequestError(message string) *RestErr {
 		Error:   message,
 	}
 }
+
+func NewNotFoundError(message string) *RestErr {
+	return &RestErr{
+		Status:  http.StatusNotFound,
+		Message: "weather info not found",
+		Error:   message,
+	}
+}

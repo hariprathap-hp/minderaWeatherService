@@ -2,12 +2,12 @@ package temp
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"minderaWeatherService/api"
 	"minderaWeatherService/clients/rest_client"
 	"minderaWeatherService/config/cacheConfig"
 	"minderaWeatherService/utils/errors"
+	"strings"
 )
 
 func parseCacheResult(cacheInfo interface{}) *WeatherInfo {
@@ -21,11 +21,9 @@ func GetWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 	//check if the weather info is present in the cache. If present in cache, return the result as json
 	cacheInfo, isCached := cacheConfig.GetCache(city)
 	if isCached {
-		fmt.Println("info cached")
 		cachedRes := parseCacheResult(cacheInfo)
 		return cachedRes, nil
 	}
-	fmt.Println("info not cached")
 	//create a new request to be sent to the weatherstack api if weather info not present in cache
 	res, apiErr := rest_client.Get(api.GetWeatherStackURL(city))
 
@@ -40,16 +38,29 @@ func GetWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 				return cachedRes, nil
 			} else {
 				//if not present in temporary cache, check permanent file for weather info
-				return nil, nil
+				cacheInfo, isCached := cacheConfig.GetNoExpiredCache(city)
+				if isCached {
+					var cachedRes WeatherInfo
+					json.Unmarshal(cacheInfo, &cachedRes)
+					return &cachedRes, nil
+				} else {
+					return nil, err
+				}
 			}
 		}
 		//set the result from openweather api in the cache
 		cacheConfig.SetCache(city, result)
 		//set permanent cache
+		cacheConfig.SetNoExpiredCache(city, result)
 		return result, nil
 	}
-	defer res.Body.Close()
+	//If no error is returned by openstack weather api, proceed storing in cache and returning the result
 	body, _ := ioutil.ReadAll(res.Body)
+	//if no error is returned, but returns 615 due to wrong city name
+	if strings.Contains(string(body), "615") {
+		return nil, errors.NewNotFoundError("weather info not found. check the city name entered")
+	}
+	defer res.Body.Close()
 
 	var tempRes WeatherReport
 	json.Unmarshal(body, &tempRes)
@@ -60,6 +71,8 @@ func GetWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 
 	//set the result from weatherstack api in the cache
 	cacheConfig.SetCache(city, result)
+	//set permanent cache
+	cacheConfig.SetNoExpiredCache(city, result)
 	return &result, nil
 }
 
@@ -71,7 +84,9 @@ func getOpenWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 	}
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-
+	if strings.Contains(string(body), "404") {
+		return nil, errors.NewNotFoundError("weather info not found. check the city name entered")
+	}
 	var tempRes OpenWeatherReport
 	json.Unmarshal(body, &tempRes)
 	result := WeatherInfo{

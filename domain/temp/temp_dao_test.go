@@ -10,10 +10,12 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/mercadolibre/golang-restclient/rest"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestMain(m *testing.M) {
+	rest.StartMockupServer()
 	rest_client.StartMockups()
 	os.Exit(m.Run())
 }
