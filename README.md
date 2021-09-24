@@ -6,13 +6,14 @@
     * Install Golang
     * Install necessay golang packages 1. gin-gonic : Used as a http web framework; testify : Used to test golang project
         * sudo apt-get update -y
-        * sudo apt-get install -y golang-github-gin-gonic-gin-dev (or) github.com/gin-gonic/gin
+        * go get -u github.com/gin-gonic/gin
         * sudo apt-get install golang-github-stretchr-testify-dev
+        * go get github.com/patrickmn/go-cache
 2. Compile and Run the services
     * Checkout source code
        * https://github.com/hariprathap-hp/minderaWeatherService.git
 
 3. Go to the folder minderaWeatherService
-4. Modify the config files with open weather api key which is used for failover case when weatherstack api fails
+4. Modify the config file at ./config/config.go with both weatherstack api key and openweather api key (The keys can also be set as environment variables)
 5. Run the application "go run main.go"
-6. Send the api request from postman/browser "http://localhost:8080/v1/weather/"
+6. Send the api request from postman/browser "http://localhost:8080/v1/weather?city=melbourne"
