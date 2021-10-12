@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"minderaWeatherService/config/keyConfig"
+	"hariprathap-hp/minderaWeatherService/config/keyConfig"
 )
 
 const (

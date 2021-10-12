@@ -2,7 +2,7 @@ package cacheConfig
 
 import (
 	"encoding/json"
-	"minderaWeatherService/utils/errors"
+	"hariprathap-hp/minderaWeatherService/utils/errors"
 	"time"
 
 	"github.com/gregjones/httpcache/diskcache"

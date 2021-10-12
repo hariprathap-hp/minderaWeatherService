@@ -2,9 +2,10 @@ package temp
 
 import (
 	"errors"
+	"hariprathap-hp/minderaWeatherService/api"
+	"hariprathap-hp/minderaWeatherService/clients/rest_client"
 	"io/ioutil"
-	"minderaWeatherService/api"
-	"minderaWeatherService/clients/rest_client"
+
 	"net/http"
 	"os"
 	"strings"

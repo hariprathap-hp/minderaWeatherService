@@ -1,7 +1,7 @@
 package main
 
 import (
-	"minderaWeatherService/handlers"
+	"hariprathap-hp/minderaWeatherService/handlers"
 
 	"github.com/gin-gonic/gin"
 )

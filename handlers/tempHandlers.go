@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"minderaWeatherService/domain/temp"
-	"minderaWeatherService/utils/errors"
+	"hariprathap-hp/minderaWeatherService/domain/temp"
+	"hariprathap-hp/minderaWeatherService/utils/errors"
 	"net/http"
 	"strconv"
 

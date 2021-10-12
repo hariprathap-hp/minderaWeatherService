@@ -2,11 +2,12 @@ package temp
 
 import (
 	"encoding/json"
+	"hariprathap-hp/minderaWeatherService/api"
+	"hariprathap-hp/minderaWeatherService/clients/rest_client"
+	"hariprathap-hp/minderaWeatherService/config/cacheConfig"
+	"hariprathap-hp/minderaWeatherService/utils/errors"
 	"io/ioutil"
-	"minderaWeatherService/api"
-	"minderaWeatherService/clients/rest_client"
-	"minderaWeatherService/config/cacheConfig"
-	"minderaWeatherService/utils/errors"
+
 	"strings"
 )
 
