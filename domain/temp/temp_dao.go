@@ -2,27 +2,32 @@ package temp
 
 import (
 	"encoding/json"
+	"fmt"
 	"hariprathap-hp/minderaWeatherService/api"
+	"hariprathap-hp/minderaWeatherService/cache"
 	"hariprathap-hp/minderaWeatherService/clients/rest_client"
-	"hariprathap-hp/minderaWeatherService/config/cacheConfig"
+	"hariprathap-hp/minderaWeatherService/domain/entity"
 	"hariprathap-hp/minderaWeatherService/utils/errors"
 	"io/ioutil"
 
 	"strings"
 )
 
-func parseCacheResult(cacheInfo interface{}) *WeatherInfo {
+func parseCacheResult(cacheInfo interface{}) *entity.WeatherInfo {
 	cachedRes, _ := json.Marshal(cacheInfo)
-	var result WeatherInfo
+	var result entity.WeatherInfo
 	json.Unmarshal(cachedRes, &result)
 	return &result
 }
 
-func GetWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
+var postcache cache.Postcache = cache.NewRedisCache("localhost:6379", 1, 10)
+
+func GetWeatherReport(city string) (*entity.WeatherInfo, *errors.RestErr) {
+	fmt.Println("GetWeatherReport")
 	//check if the weather info is present in the cache. If present in cache, return the result as json
-	cacheInfo, isCached := cacheConfig.GetCache(city)
-	if isCached {
-		cachedRes := parseCacheResult(cacheInfo)
+	var weather *entity.WeatherInfo = postcache.Get(city)
+	if weather != nil {
+		cachedRes := parseCacheResult(weather)
 		return cachedRes, nil
 	}
 	//create a new request to be sent to the weatherstack api if weather info not present in cache
@@ -33,26 +38,14 @@ func GetWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 		result, err := getOpenWeatherReport(city)
 		//if weather info is not returned from openweather api as well, check cache if result is present
 		if err != nil {
-			cacheInfo, isCached := cacheConfig.GetCache(city)
-			if isCached {
-				cachedRes := parseCacheResult(cacheInfo)
+			var weather *entity.WeatherInfo = postcache.Get(city)
+			if weather != nil {
+				cachedRes := parseCacheResult(weather)
 				return cachedRes, nil
-			} else {
-				//if not present in temporary cache, check permanent file for weather info
-				cacheInfo, isCached := cacheConfig.GetNoExpiredCache(city)
-				if isCached {
-					var cachedRes WeatherInfo
-					json.Unmarshal(cacheInfo, &cachedRes)
-					return &cachedRes, nil
-				} else {
-					return nil, err
-				}
 			}
 		}
 		//set the result from openweather api in the cache
-		cacheConfig.SetCache(city, result)
-		//set permanent cache
-		cacheConfig.SetNoExpiredCache(city, result)
+		postcache.Set(city, result)
 		return result, nil
 	}
 	//If no error is returned by openstack weather api, proceed storing in cache and returning the result
@@ -63,21 +56,20 @@ func GetWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 	}
 	defer res.Body.Close()
 
-	var tempRes WeatherReport
+	var tempRes entity.WeatherReport
 	json.Unmarshal(body, &tempRes)
-	result := WeatherInfo{
+	result := entity.WeatherInfo{
 		WindSpeed:   float64(tempRes.Current.WindSpeed),
 		Temperature: float64(tempRes.Current.Temperature),
 	}
 
 	//set the result from weatherstack api in the cache
-	cacheConfig.SetCache(city, result)
-	//set permanent cache
-	cacheConfig.SetNoExpiredCache(city, result)
+	postcache.Set(city, &result)
+
 	return &result, nil
 }
 
-func getOpenWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
+func getOpenWeatherReport(city string) (*entity.WeatherInfo, *errors.RestErr) {
 	res, apiErr := rest_client.Get(api.GetOpenWeatherURL(city))
 	if apiErr != nil {
 		//if the api call to both the apis fail, then we need to return the value from the storage we have
@@ -88,9 +80,9 @@ func getOpenWeatherReport(city string) (*WeatherInfo, *errors.RestErr) {
 	if strings.Contains(string(body), "404") {
 		return nil, errors.NewNotFoundError("weather info not found. check the city name entered")
 	}
-	var tempRes OpenWeatherReport
+	var tempRes entity.OpenWeatherReport
 	json.Unmarshal(body, &tempRes)
-	result := WeatherInfo{
+	result := entity.WeatherInfo{
 		WindSpeed:   float64(tempRes.Wind.Speed),
 		Temperature: float64(tempRes.Main.Temp),
 	}

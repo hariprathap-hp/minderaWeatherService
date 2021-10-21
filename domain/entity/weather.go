@@ -1,4 +1,4 @@
-package temp
+package entity
 
 type WeatherReport struct {
 	Current struct {
